@@ -23,7 +23,7 @@ const options = {
         enabled: false
     },
     xaxis:{
-        type: 'datetime',
+        type:"datetime",
         axisBorder: {
             color: theme.colors.gray[600],
         },
