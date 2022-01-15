@@ -1,8 +1,8 @@
 import { Flex, Icon, Box, Table, Button, Stack, Thead, Tr, Th, Checkbox, Tbody, Td, Text } from "@chakra-ui/react"
-import { PaginationItem } from "./Pagination/PaginationItem"
+import { PaginationItem } from "./PaginationItem"
 export function Pagination(){
     return (
-        <Stack direction="row"  spacing="6" mt="8" justify="space-between" align="center">
+        <Stack direction={["column", "row"]}  spacing="6" mt="8" justify="space-between" align="center">
             <Box>
                 0-10 de 199
             </Box>
