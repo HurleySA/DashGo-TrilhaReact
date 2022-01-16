@@ -37,7 +37,7 @@ export default function UserCreate(){
                         </VStack>
                         <Flex mt="8" justify={["center", "flex-end"]}>
                             <HStack spacing="4">
-                                <Link href="/users">
+                                <Link href="/users" passHref>
                                     <Button colorScheme="whiteAlpha" >Cancelar</Button>
                                 </Link>
                                 <Button colorScheme="red" >Salvar</Button>
