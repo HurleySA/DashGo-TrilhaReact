@@ -51,7 +51,7 @@ const options = {
     }
 };
 
-const series = [{ name:'teste', data:[10,15,40,20,50,34,23,63]}]
+const series = [{ name:'teste', data:[10,15,40,20,50,34,23]}]
 
 export default function dashboard() {
 
