@@ -60,23 +60,25 @@ export default function UserList(){
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
+                            {data.users.map(user => 
+                                (<Tr key={user.id}>
                                 <Td px={["4", "4", "6"]}>
                                 <Checkbox colorScheme="red" />
                                 </Td>
                                 <Td>
                                     <Box >
-                                        <Text fontWeight="bold">Matheus Eduardo</Text>
-                                        <Text fz="sm" color="gray.300">matheuselineudo@hotmail.com</Text>
+                                        <Text fontWeight="bold">{user.name}</Text>
+                                        <Text fz="sm" color="gray.300">{user.email}</Text>
                                     </Box>
                                 </Td>
                                 <Td>
-                                {isWideVersion &&  <Text fontWeight="bold">28 de Novembro, 2021</Text>}
+                                {isWideVersion &&  <Text fontWeight="bold">{user.createdAt}</Text>}
                                 </Td>
                                 <Td>
                                     <Button as="a" size="sm" fontSize="sm" colorScheme="red" leftIcon={<Icon as={RiPencilLine}></Icon>}>{isWideVersion && 'Editar'}</Button> 
                                 </Td>
-                            </Tr>
+                            </Tr>)
+                            ) }
                         </Tbody>
                     </Table>
                     <Pagination/>
