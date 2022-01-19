@@ -1,18 +1,33 @@
-import { Flex, Icon, Box, Table, Button, Heading, Thead, Tr, Th, Checkbox, Tbody, Td, Text, useBreakpointValue, Spinner } from "@chakra-ui/react"
+import { Flex, Icon, Box, Table, Button, Heading, Thead, Tr, Th, Checkbox, Tbody, Td, Text, useBreakpointValue, Spinner, Link } from "@chakra-ui/react"
 import { RiAddLine, RiPencilLine } from "react-icons/ri"
 import { Header } from "../../components/Header/Header"
-import { Pagination } from "../../components/Pagination/Pagination"
 import { SideBar } from "../../components/Sidebar/Sidebar"
-import Link from "next/link";
+import NextLink from "next/link";
 import { useUsers } from "../../hooks/useUsers"
+import { PaginationItem } from "../../components/Pagination/PaginationItem";
+import { Pagination } from "../../components/Pagination/Pagination";
+import { useState } from "react";
+import { QueryClient } from "react-query";
+import { queryCliente } from "../../services/mirage/queryCliente";
+import { api } from "../../services/api";
 
 export default function UserList(){
-    const {data, isLoading, isFetching ,error} = useUsers();
+    const [page, setPage] = useState(1);
+    const {data, isLoading, isFetching ,error, refetch} = useUsers(page);
 
     const isWideVersion = useBreakpointValue({
         base: false,
         lg: true,
     })
+
+    async function handlePrefetchUser(userId: number){
+        await queryCliente.prefetchQuery(['user',userId], async () =>{
+            const response = await api.get(`users/${userId}`)
+            return response.data;
+        },{
+            staleTime:1000*60*10,
+        })
+    }
     return(
         <Box>
             <Header/>
@@ -24,9 +39,9 @@ export default function UserList(){
                             Usuários
                             {!isLoading &&  isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
                         </Heading>
-                        <Link href="/users/create" passHref>
+                        <NextLink href="/users/create" passHref>
                             <Button as="a" size="sm" fontSize="sm" colorScheme="red" leftIcon={<Icon as={RiAddLine}></Icon>}>Criar Novo</Button>    
-                        </Link>
+                        </NextLink>
                         
                     </Flex>
 
@@ -57,14 +72,16 @@ export default function UserList(){
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {data.map(user => 
+                            {data.users.map(user => 
                                 (<Tr key={user.id}>
                                 <Td px={["4", "4", "6"]}>
                                 <Checkbox colorScheme="red" />
                                 </Td>
                                 <Td>
-                                    <Box >
-                                        <Text fontWeight="bold">{user.name}</Text>
+                                    <Box>
+                                        <Link color="purple.400" onMouseEnter={() => handlePrefetchUser(user.id)}>
+                                            <Text fontWeight="bold">{user.name}</Text>
+                                        </Link>
                                         <Text fz="sm" color="gray.300">{user.email}</Text>
                                     </Box>
                                 </Td>
@@ -78,8 +95,8 @@ export default function UserList(){
                             ) }
                         </Tbody>
                     </Table>
-                    <Pagination/>
-                        </>
+                    <Pagination totalCountOfRegisters={data.totalCount} currentPage={page} onPageChange={setPage}/>
+                    </>
                     )
                     }
 
