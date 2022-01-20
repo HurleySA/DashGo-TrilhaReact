@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { number } from "yup/lib/locale";
 import { api } from "../services/api";
 
 interface User{

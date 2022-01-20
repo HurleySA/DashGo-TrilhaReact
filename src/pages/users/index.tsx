@@ -7,20 +7,19 @@ import { useUsers } from "../../hooks/useUsers"
 import { PaginationItem } from "../../components/Pagination/PaginationItem";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { useState } from "react";
-import { QueryClient } from "react-query";
 import { queryCliente } from "../../services/mirage/queryCliente";
 import { api } from "../../services/api";
 
 export default function UserList(){
     const [page, setPage] = useState(1);
-    const {data, isLoading, isFetching ,error, refetch} = useUsers(page);
-
+    const {data, isLoading, isFetching ,error} = useUsers(page);
+    console.log(data)
     const isWideVersion = useBreakpointValue({
         base: false,
         lg: true,
     })
 
-    async function handlePrefetchUser(userId: number){
+    async function handlePrefetchUser(userId: string){
         await queryCliente.prefetchQuery(['user',userId], async () =>{
             const response = await api.get(`users/${userId}`)
             return response.data;
